@@ -4,7 +4,7 @@ import './App.css';
 import abi from "./utils/WavePortal.json";
 
 const getEthereumObject = () => window.ethereum;
-const contractAddress = "0x81FF1228CC25CAC3b9ff12a3B651Ba17333002C8"; // variable to holds deployed contract address
+const contractAddress = "0x54a8Dd949541ce59DDF4D1F573092791B5E5cA2A"; // variable to holds deployed contract address
 const contractABI = abi.abi; // variable referencing abi content!
 
 const App = () => {
@@ -68,6 +68,7 @@ const App = () => {
   
       console.log("Connected", accounts[0]);
       setCurrentAccount(accounts[0]);
+      await checkIfWalletIsConnected();
     } catch (error) {
       console.error(error);
     }
@@ -93,19 +94,19 @@ const App = () => {
       if (waveMsg != "") {
         const waveTxn = await wavePortalContract.waveMessage(waveMsg);
         console.log("Mining...", waveTxn.hash);
-  
-      await waveTxn.wait();
+        await waveTxn.wait();
+        console.log("Mined -- ", waveTxn.hash);
       } else {
         const waveTxn = await wavePortalContract.wave();
         console.log("Mining...", waveTxn.hash);
-  
         await waveTxn.wait();
+        console.log("Mined -- ", waveTxn.hash);
       }
       
-      console.log("Mined -- ", waveTxn.hash);
   
       count = await wavePortalContract.getTotalWaves();
       console.log("Retrieved total wave count...", count.toNumber());
+      location. reload()
     } catch (error) {
       console.log(error);
     }
@@ -128,7 +129,7 @@ const App = () => {
   
       let wavesCleaned = [];
       waves.forEach(wave => {
-        wavesCleaned.push({
+        wavesCleaned.unshift({
           address: wave.waver,
           timestamp: new Date(wave.timestamp * 1000),
           message: wave.message
