@@ -9,26 +9,50 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  max-width: 600px;
+  max-width: 900px;
 }
 
 .header {
   text-align: center;
   font-size: 32px;
+  color: #03dac6;
   font-weight: 600;
+}
+
+.bioRow {
+  width:100%;
 }
 
 .bio {
   text-align: center;
-  color: gray;
+  color: #bb86fc;
+  color: #cf6679;
   margin-top: 16px;
 }
 
 .waveButton {
+  font-weight: bold;
   cursor: pointer;
   margin-top: 16px;
   padding: 8px;
-  border: 0;
   border-radius: 5px;
-  
+  color: #bb86fc;
+  background-color: #121212;
+  border-style: solid;
+  border-color: #bb86fc;
+  border: 1;
+}
+
+.waveButton:hover {
+  border-style: none;
+  background-color: #bb86fc;
+  color: #121212;
+}
+
+body{
+  background-color: #121212;
+}
+
+p, li {
+  color: white;
 }

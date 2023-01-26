@@ -8,7 +8,6 @@ const contractAddress = "0x54a8Dd949541ce59DDF4D1F573092791B5E5cA2A"; // variabl
 const contractABI = abi.abi; // variable referencing abi content!
 
 const App = () => {
-  var waveMsg = "My Msg";
   const [currentAccount, setCurrentAccount] = useState("");
 
   // All state property to store all waves
@@ -118,18 +117,24 @@ const App = () => {
       let count = await wavePortalContract.getTotalWaves();
       console.log("Retrieved total wave count...", count.toNumber());
 
-      if (waveMsg != "") {
-        const waveTxn = await wavePortalContract.waveMessage(waveMsg, { gasLimit:3000000 });
+      
+      var userMsg = document.getElementById("userMsg");
+      var userMsgVal = userMsg.value;
+      
+      if (userMsgVal != "") {
+        const waveTxn = await wavePortalContract.waveMessage(userMsgVal, { gasLimit:3000000 });
         console.log("Mining...", waveTxn.hash);
         await waveTxn.wait();
         console.log("Mined -- ", waveTxn.hash);
-      } else {
+      } 
+      else {
         const waveTxn = await wavePortalContract.wave({ gasLimit:3000000 });
         console.log("Mining...", waveTxn.hash);
         await waveTxn.wait();
         console.log("Mined -- ", waveTxn.hash);
       }
-      
+
+      userMsg.value = "";
   
       count = await wavePortalContract.getTotalWaves();
       console.log("Retrieved total wave count...", count.toNumber());
@@ -173,27 +178,40 @@ const App = () => {
   return (
     <div className="mainContainer">
       <div className="dataContainer" style={{marginBottom:"45px"}}>
-        <div className="header">
-          Hey there!
-        </div>
         
+        <div className="header">Hey there!</div>
+
         <div className="bio">
-          <h3>I am Hamzah</h3>
-          <p>I am working on an Etheruem Smart Contract, pretty cool right?</p>
-          <br/>
-          
-          <h3>Say HI</h3>
-          <p>Connect your Ethereum wallet and 👋 (wave) at me!</p>
+            <h3>I am Hamzah ;)</h3>
+            <p>This is my Etheruem Smart Contract! Pretty cool right?</p>
         </div>
 
-        <button className="waveButton" onClick={wave}>Wave at Me</button>
+        <div className="bio">
+            <h3>To say HI :)</h3>
+            <p>Connect your Ethereum wallet.</p>
+            <p>Wave 👋 at me!</p>
+        </div>
+
+        <br/>
 
         {
-          // if there is no currentAccount, render this button
+          !currentAccount 
+          ? 
+          (
+              <button className="waveButton" onClick={connectWallet}>Connect Wallet</button>
+            
+          )
+          : 
+          (
+            <div className="dataContainer">
+              <textarea id="userMsg" rows="3" placeholder="Message (optional)">
+              </textarea>
+              <button className="waveButton" title="Wave at me" onClick={wave}>👋 WAVE! 👋</button>
+            </div>
+          )
         }
-        {!currentAccount && (
-          <button className="waveButon" onClick={connectWallet}>Connect Wallet</button>
-        )}
+
+        <br/>
 
         {allWaves.map((wave, index) => {
           return (
